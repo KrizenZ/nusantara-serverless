@@ -33,8 +33,8 @@
 </main>
 <script>
 'use strict';
-// API URL sudah dimasukkan. Tambahkan /nama-route di belakangnya jika diperlukan (contoh: ...amazonaws.com/laporan)
-const API_URL = 'https://mfehw2z68b.execute-api.us-east-1.amazonaws.com/';
+
+const API_URL = 'https://mfehw2z68b.execute-api.us-east-1.amazonaws.com/permintaan';
 
 const form = document.getElementById('reportForm');
 const button = document.getElementById('sendButton');
@@ -66,7 +66,7 @@ form.addEventListener('submit', async function(ev) {
             body: JSON.stringify({ nama, masalah })
         });
         
-        // Deteksi halaman error HTML dari AWS
+    
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.includes("text/html")) {
             throw new Error("API merespons dengan HTML. Pastikan URL menyertakan path/stage (misal: /prod atau /laporan), API sudah di-deploy, dan CORS aktif.");
@@ -74,7 +74,7 @@ form.addEventListener('submit', async function(ev) {
         
         const payload = await res.json();
         
-        // Toleransi perbedaan kapitalisasi status
+ 
         if(!res.ok || (payload.status !== 'DITERIMA' && payload.status !== 'diterima')) {
             throw new Error(payload.error || payload.pesan || 'API belum menerima laporan.');
         }
